@@ -108,9 +108,6 @@ class GameSpace():
             text_rect.center = ([400, 200])
             self.screen.blit(text, text_rect)
             pygame.display.flip()
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    self.quit()
 
 
 class ClientConn(Protocol):
