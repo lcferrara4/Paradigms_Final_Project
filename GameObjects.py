@@ -89,7 +89,7 @@ class Puck(pygame.sprite.Sprite):
         if goal == 1:
             self.gs.scoreboard.score1+=1
         elif goal == 2:
-            self.gs.scoreboard.score2+=2
+            self.gs.scoreboard.score2+=1
 
         #Check Bounds
         if self.rect.centerx <85:
