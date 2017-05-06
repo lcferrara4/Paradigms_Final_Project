@@ -28,10 +28,8 @@ class ScoreBoard(pygame.sprite.Sprite):
         self.label = self.font.render("Player1: {} vs Player 2: {}".format(self.score1, self.score2), 1, (255, 255, 0))
         winner = self.check_score()
         if winner == 1:
-            self.label = self.font.render("Player 1 Wins!!",1,(255,255,0))
             self.gs.winner = winner
         elif winner == 2:
-            self.label.self.font.render("Player 2 Wins!!",1,(255,255,0))
             self.gs.winner = winner
     
     def update_score(self, score1, score2):
