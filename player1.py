@@ -128,7 +128,7 @@ class GameSpace():
             text_rect = text.get_rect()
             text_rect.center = ([400, 200])
             self.screen.blit(text, text_rect)
-            pygame.display.blit()
+            pygame.display.flip()
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     self.quit()
