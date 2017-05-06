@@ -52,10 +52,7 @@ class GameSpace():
         def game_loop(self):
 
             if self.connected:
-                #print('connected in gamespace main')
-                
                 self.clock.tick(60)
-                
                 
                 self.count+=1
                 if self.collision(self.puck.rect.center, self.player1.rect.center):
@@ -74,7 +71,6 @@ class GameSpace():
                     elif event.type == pygame.KEYDOWN:
                         self.player1.move(event.key)
 
-                #print('ticking')
                 self.player1.tick()
                 self.player2.tick()
                 self.puck.tick()
@@ -94,7 +90,6 @@ class GameSpace():
                 self.screen.blit(self.puck.image, self.puck.rect)
                 self.screen.blit(self.scoreboard.label, self.scoreboard.rect)
 
-                #print('flipping')
                 pygame.display.flip()
 
             else:
@@ -144,7 +139,7 @@ class ServerConn(Protocol):
 	    self.gamespace_p1 = gs
         
         def connectionMade(self):
-            print ("connection made")
+            pass
 
 	def dataReceived(self, data):
 	    if data == "addplayer":
@@ -155,7 +150,6 @@ class ServerConn(Protocol):
                 self.gamespace_p1.player2.rect.center = data[0]
 
         def connectionLost(self, reason):
-            print('connection lost')
             reactor.stop()
 
         def quit(self):

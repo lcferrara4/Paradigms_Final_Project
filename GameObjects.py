@@ -160,7 +160,6 @@ class Player1(pygame.sprite.Sprite):
         elif self.rect.centery > 390:
             self.rect.centery = 385
 
-        print(self.rect.center)
         self.move_type = "NONE"
 
     def move(self, key):

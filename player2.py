@@ -34,7 +34,6 @@ class GameSpace():
 	    pygame.display.set_caption("Air Hockey Game - Player 2")
 
 	    #2. set up game objects
-            #print('set up')
 	    self.clock = pygame.time.Clock()
             self.background = pygame.image.load(BOARD_IMG)
             self.background = self.scale_image(.5, self.background)
@@ -57,7 +56,6 @@ class GameSpace():
                     elif event.type == pygame.KEYDOWN:
                         self.player2.move(event.key)
 
-                #print('ticking')
                 self.player1.tick()
                 self.player2.tick()
                 self.puck.tick()
@@ -75,7 +73,6 @@ class GameSpace():
                 self.screen.blit(self.puck.image, self.puck.rect)
                 self.screen.blit(self.scoreboard.label, self.scoreboard.rect)
 
-                #print('flipping')
                 pygame.display.flip()
 
         def scale_image(self, scale, image):
@@ -120,7 +117,6 @@ class ClientConn(Protocol):
 	    self.gamespace_p2 = gs
 		
 	def connectionMade(self):
-	    print('connection made')
             self.gamespace_p2.connected = True
             self.transport.write("addplayer")
 
