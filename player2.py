@@ -66,14 +66,14 @@ class GameSpace():
 
                 if self.winner != 0:
                     self.end_game()
+                else:
+                    self.screen.blit(self.background, (0,0))
+                    self.screen.blit(self.player1.image, self.player1.rect)
+                    self.screen.blit(self.player2.image, self.player2.rect)
+                    self.screen.blit(self.puck.image, self.puck.rect)
+                    self.screen.blit(self.scoreboard.label, self.scoreboard.rect)
 
-                self.screen.blit(self.background, (0,0))
-                self.screen.blit(self.player1.image, self.player1.rect)
-                self.screen.blit(self.player2.image, self.player2.rect)
-                self.screen.blit(self.puck.image, self.puck.rect)
-                self.screen.blit(self.scoreboard.label, self.scoreboard.rect)
-
-                pygame.display.flip()
+                    pygame.display.flip()
 
         def scale_image(self, scale, image):
             size = image.get_size()
@@ -107,6 +107,7 @@ class GameSpace():
             text_rect = text.get_rect()
             text_rect.center = ([400, 200])
             self.screen.blit(text, text_rect)
+            pygame.display.flip()
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     self.quit()

@@ -37,9 +37,9 @@ class ScoreBoard(pygame.sprite.Sprite):
         self.score2 = score2
 
     def check_score(self):
-        if self.score1 >= 7:
+        if self.score1 >= 2:
             return 1
-        elif self.score2 >= 7:
+        elif self.score2 >= 2:
             return 2
         else:
             return 0
