@@ -43,6 +43,7 @@ class GameSpace():
             self.puck = Puck(self)
             self.scoreboard = ScoreBoard(self)
             self.count = 0
+            self.winner = 0
 
         def game_loop(self):
             
@@ -65,7 +66,8 @@ class GameSpace():
                 if self.count % 2 == 0: 
                     self.write(zlib.compress(pickle.dumps([self.player2.rect.center])))
 
-                #print('blitting')
+                if self.winner != 0:
+                    self.end_game()
 
                 self.screen.blit(self.background, (0,0))
                 self.screen.blit(self.player1.image, self.player1.rect)
@@ -98,12 +100,12 @@ class GameSpace():
         def write(self):
             pass
 
-        def end_game(self, winner):
+        def end_game(self):
             self.screen.fill((0,0,0))
             winFont = pygame.font.SysFont("monospace", 42)
-            if winner == 2:
+            if self.winner == 2:
                 text = winFont.render("You win!!! Congrats!!", 1, (255, 255, 255))
-            elif winner == 1:
+            elif self.winner == 1:
                 text = winFont.render("You lose!!! Womp....", 1, (255, 255, 255))
             text_rect = text.get_rect()
             text_rect.center = ([400, 200])

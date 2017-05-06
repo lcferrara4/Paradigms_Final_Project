@@ -41,9 +41,11 @@ class GameSpace():
             self.puck = Puck(self)
             self.scoreboard = ScoreBoard(self)
 
+            self.winner = 0
+
             #count for each time program loops for pickling
             self.count = 0
-                
+            
             #Check if puck is being hit from still at center
             self.FIRST = True
 
@@ -53,6 +55,8 @@ class GameSpace():
                 #print('connected in gamespace main')
                 
                 self.clock.tick(60)
+                
+                
                 self.count+=1
                 if self.collision(self.puck.rect.center, self.player1.rect.center):
                     if self.FIRST:
@@ -80,7 +84,10 @@ class GameSpace():
                 if self.count % 2 == 0:
                     self.write(zlib.compress(pickle.dumps([self.player1.rect.center, self.puck.rect.center, pickle.dumps(self.scoreboard.score1), pickle.dumps(self.scoreboard.score2), pickle.dumps(self.puck.speedx), pickle.dumps(self.puck.speedy)])))
 
-                #print('blitting')
+                
+                if self.winner != 0:
+                    self.end_game()
+
                 self.screen.blit(self.background, (0,0))
                 self.screen.blit(self.player1.image, self.player1.rect)
                 self.screen.blit(self.player2.image, self.player2.rect)
@@ -116,12 +123,12 @@ class GameSpace():
         def write(self, data):
             pass
 
-        def end_game(self, winner):
+        def end_game(self):
             self.screen.fill((0,0,0))
             winFont = pygame.font.SysFont("monospace", 42)
-            if winner == 1:
+            if self.winner == 1:
                 text = winFont.render("You win!!! Congrats!!", 1, (255, 255, 255))
-            elif winner == 2:
+            elif self.winner == 2:
                 text = winFont.render("You lose!!! Womp....", 1, (255, 255, 255))
             text_rect = text.get_rect()
             text_rect.center = ([400, 200])
