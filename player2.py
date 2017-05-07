@@ -60,10 +60,11 @@ class GameSpace():
                 self.player2.tick()
                 self.puck.tick()
                 self.scoreboard.tick()
-                
+ 
                 if self.count % 2 == 0: 
                     self.write(zlib.compress(pickle.dumps([self.player2.rect.center])))
 
+                
                 if self.winner != 0:
                     self.end_game()
                 else:
@@ -124,13 +125,15 @@ class ClientConn(Protocol):
         def dataReceived(self, data):
             #unpack pickled data
             data = pickle.loads(zlib.decompress(data))
-            self.gamespace_p2.player1.rect.center = data[0]
-            self.gamespace_p2.puck.rect.center = data[1]
-            self.gamespace_p2.scoreboard.score1 = pickle.loads(data[2])
-            self.gamespace_p2.scoreboard.score2 = pickle.loads(data[3])
-            self.gamespace_p2.puck.speedx = pickle.loads(data[4])
-            self.gamespace_p2.puck.speedy = pickle.loads(data[5])
-
+            if len(data) == 6:
+                self.gamespace_p2.player1.rect.center = data[0]
+                self.gamespace_p2.puck.rect.center = data[1]
+                self.gamespace_p2.scoreboard.score1 = pickle.loads(data[2])
+                self.gamespace_p2.scoreboard.score2 = pickle.loads(data[3])
+                self.gamespace_p2.puck.speedx = pickle.loads(data[4])
+                self.gamespace_p2.puck.speedy = pickle.loads(data[5])
+            elif len(data) == 1:
+                self.gamespace_p2.player1.rect.center = data[0]
 
         def quit(self):
             self.transport.loseConnection()

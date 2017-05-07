@@ -37,9 +37,9 @@ class ScoreBoard(pygame.sprite.Sprite):
         self.score2 = score2
 
     def check_score(self):
-        if self.score1 >= 2:
+        if self.score1 >= 7:
             return 1
-        elif self.score2 >= 2:
+        elif self.score2 >= 7:
             return 2
         else:
             return 0
@@ -111,8 +111,7 @@ class Puck(pygame.sprite.Sprite):
                 return 2
             elif self.rect.centerx > 850:
                 return 1
-        else:
-            return 0
+        return 0
 
     def change_speed(self, rect):
         playerx = rect.centerx
@@ -129,7 +128,7 @@ class Player1(pygame.sprite.Sprite):
         pygame.sprite.Sprite.__init__(self)
         self.gs = gs
         self.image = pygame.image.load(image)
-        self.image = self.gs.scale_image(.25, self.image)
+        self.image = self.gs.scale_image(.15, self.image)
         self.rect = self.image.get_rect()
         self.rect.centerx = self.gs.width/4
         self.rect.centery = self.gs.height/2
@@ -175,7 +174,7 @@ class Player2(pygame.sprite.Sprite):
         pygame.sprite.Sprite.__init__(self)
         self.gs = gs
         self.image = pygame.image.load(image)
-        self.image = self.gs.scale_image(.25, self.image)
+        self.image = self.gs.scale_image(.15, self.image)
         self.rect = self.image.get_rect()
         self.rect.centerx = self.gs.width/4 * 3
         self.rect.centery = self.gs.height/2 

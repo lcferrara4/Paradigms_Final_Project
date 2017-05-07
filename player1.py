@@ -77,10 +77,11 @@ class GameSpace():
                 self.scoreboard.tick()
 
                 #send coordinates every other tick
-                if self.count % 2 == 0:
+                if self.count % 4 == 0:
                     self.write(zlib.compress(pickle.dumps([self.player1.rect.center, self.puck.rect.center, pickle.dumps(self.scoreboard.score1), pickle.dumps(self.scoreboard.score2), pickle.dumps(self.puck.speedx), pickle.dumps(self.puck.speedy)])))
+                elif self.count % 2 == 0:
+                    self.write(zlib.compress(pickle.dumps([self.player1.rect.center])))
 
-                
                 if self.winner != 0:
                     self.end_game()
                 else:

@@ -19,4 +19,4 @@ The images used in this game were taken from the following links:
 
 	* hockeyboard.png: https://www.cgtrader.com/3d-models/sports/equipment/air-hockey-game-ready
 
-	* mallet1.png, mallet2.png, puck.png: http://imgur.com/gallery/KQgRv
+	* puck.png, mallet1.png, mallet2.png: http://imgur.com/gallery/KQgRv
