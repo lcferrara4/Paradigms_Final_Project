@@ -106,9 +106,9 @@ class GameSpace():
 
         def collision(self,puck, player):
             distance = self.calc_collision(puck[0], puck[1], player[0], player[1])
-            if self.FIRST and distance <=45:
+            if self.FIRST and distance <=55:
                 return True
-            elif distance <=65:
+            elif distance <=70:
                 return True
             else:
                 return False

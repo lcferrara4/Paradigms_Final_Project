@@ -58,11 +58,10 @@ class GameSpace():
 
                 self.player1.tick()
                 self.player2.tick()
- 
+                
  
                 if self.count % 2 == 0: 
                     self.write(zlib.compress(pickle.dumps([self.player2.rect.center])))
-                
                 self.puck.tick()
                 self.scoreboard.tick()
                
@@ -133,6 +132,8 @@ class ClientConn(Protocol):
                 self.gamespace_p2.scoreboard.score2 = pickle.loads(data[3])
                 self.gamespace_p2.puck.speedx = pickle.loads(data[4])
                 self.gamespace_p2.puck.speedy = pickle.loads(data[5])
+                self.gamespace_p2.player2.rect.centerx = self.gamespace_p2.width / 4 * 3
+                self.gamespace_p2.player2.rect.centery = self.gamespace_p2.height / 2
             elif len(data) == 4:
                 self.gamespace_p2.player1.rect.center = data[0]
                 self.gamespace_p2.puck.rect.center = data[1]

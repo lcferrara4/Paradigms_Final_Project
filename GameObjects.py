@@ -64,14 +64,14 @@ class Puck(pygame.sprite.Sprite):
         
         #Minimal Friction on Surface
         if self.speedx > 0:
-            self.speedx -=.1
+            self.speedx -=.08
         elif self.speedx < 0:
-            self.speedx += .1
+            self.speedx += .08
         
         if self.speedy > 0:
-            self.speedy -=.1
+            self.speedy -=.08
         elif self.speedy < 0:
-            self.speedy += .1
+            self.speedy += .08
 
         #Check Goal
         #Player 1 Scored
@@ -94,21 +94,21 @@ class Puck(pygame.sprite.Sprite):
             self.gs.scoreboard.score2+=1
 
         #Check Bounds
-        if self.rect.centerx <85:
-            self.rect.centerx = (self.gs.width/2) + 10
+        if self.rect.centerx < 80:
             self.speedx = -self.speedx
-        elif self.rect.centerx > 855:
-            self.rect.centerx = 850
+            self.rect.centerx = self.rect.centerx + 10
+        elif self.rect.centerx > 850:
             self.speedx = -self.speedx
-        if self.rect.centery < 85:
-            self.rect.centery = 99
+            self.rect.centerx = self.rect.centerx - 10
+        if self.rect.centery < 95:
             self.speedy = -self.speedy
-        elif self.rect.centery > 395:
+            self.rect.centery = self.rect.centery + 10
+        elif self.rect.centery > 400:
             self.speedy = -self.speedy
-            self.rect.centery = 390
+            self.rect.centery = self.rect.centery - 10
 
     def check_goal(self):
-        if self.rect.centery > 180 and self.rect.centery < 300:
+        if self.rect.centery > 200 and self.rect.centery < 295:
             if self.rect.centerx < 90:
                 return 2
             elif self.rect.centerx > 850:
@@ -122,8 +122,8 @@ class Puck(pygame.sprite.Sprite):
         diff_y = (self.rect.centery - playery) / float(100)
         diff_x = (self.rect.centerx - playerx) / float(100)
 
-        self.speedx = diff_x * 55
-        self.speedy = diff_y * 55
+        self.speedx = diff_x * 50
+        self.speedy = diff_y * 50
 
 class Player1(pygame.sprite.Sprite):
     def __init__(self, gs=None, image=None):
