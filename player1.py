@@ -55,16 +55,7 @@ class GameSpace():
                 self.clock.tick(60)
                 
                 self.count+=1
-                if self.collision(self.puck.rect.center, self.player1.rect.center):
-                    if self.FIRST:
-                        self.FIRST = False
-                    self.puck.change_speed(self.player1.rect)
-                elif self.collision(self.puck.rect.center, self.player2.rect.center):
-                    if self.FIRST:
-                        self.FIRST = False
-                    self.puck.change_speed(self.player2.rect)
-
-
+                
                 for event in pygame.event.get():
                     if event.type == pygame.QUIT:
                         self.quit()
@@ -74,13 +65,25 @@ class GameSpace():
                 self.player1.tick()
                 self.player2.tick()
                 self.puck.tick()
+
+                if self.collision(self.puck.rect.center, self.player1.rect.center):
+                    if self.FIRST:
+                        self.FIRST = False
+                    self.puck.change_speed(self.player1.rect)
+                elif self.collision(self.puck.rect.center, self.player2.rect.center):
+                    if self.FIRST:
+                        self.FIRST = False
+                    self.puck.change_speed(self.player2.rect)
+                
                 self.scoreboard.tick()
 
-                #send coordinates every other tick
-                if self.count % 4 == 0:
+                # send coordinates on every clock tick (not too much data) but important for player 2 to have correct positions
+                # only send scoreboard if needs updating -> someone scored
+                if self.puck.scored != 0:
                     self.write(zlib.compress(pickle.dumps([self.player1.rect.center, self.puck.rect.center, pickle.dumps(self.scoreboard.score1), pickle.dumps(self.scoreboard.score2), pickle.dumps(self.puck.speedx), pickle.dumps(self.puck.speedy)])))
-                elif self.count % 2 == 0:
-                    self.write(zlib.compress(pickle.dumps([self.player1.rect.center])))
+                else:
+                    self.write(zlib.compress(pickle.dumps([self.player1.rect.center, self.puck.rect.center, pickle.dumps(self.puck.speedx), pickle.dumps(self.puck.speedy)])))
+            
 
                 if self.winner != 0:
                     self.end_game()
@@ -103,7 +106,7 @@ class GameSpace():
 
         def collision(self,puck, player):
             distance = self.calc_collision(puck[0], puck[1], player[0], player[1])
-            if self.FIRST and distance <=55:
+            if self.FIRST and distance <=45:
                 return True
             elif distance <=65:
                 return True
@@ -140,12 +143,22 @@ class ServerConn(Protocol):
             pass
 
 	def dataReceived(self, data):
-	    if data == "addplayer":
+	    if "addplayer" in data:
 		self.gamespace_p1.connected = True
+                try:
+                    data = data.split("addplayer")[1]
+                    data = pickle.loads(zlib.decompress(data))
+                    self.gamespace_p1.player2.rect.center = data[0]
+                except Exception as e:
+                    pass
             #pickled data
             else:
                 data = pickle.loads(zlib.decompress(data))
-                self.gamespace_p1.player2.rect.center = data[0]
+                # do not update player2 if someone scored -> needs to stay at start position
+                if self.gamespace_p1.puck.scored == 0:
+                    self.gamespace_p1.player2.rect.center = data[0]
+                else:
+                    self.gamespace_p1.puck.scored = 0
 
         def connectionLost(self, reason):
             reactor.stop()

@@ -49,7 +49,7 @@ class GameSpace():
             if self.connected:
                 self.clock.tick(60)
                 self.count+=1
-                
+               
                 for event in pygame.event.get():
                     if event.type == pygame.QUIT:
                         self.quit()
@@ -58,13 +58,14 @@ class GameSpace():
 
                 self.player1.tick()
                 self.player2.tick()
-                self.puck.tick()
-                self.scoreboard.tick()
+ 
  
                 if self.count % 2 == 0: 
                     self.write(zlib.compress(pickle.dumps([self.player2.rect.center])))
-
                 
+                self.puck.tick()
+                self.scoreboard.tick()
+               
                 if self.winner != 0:
                     self.end_game()
                 else:
@@ -132,8 +133,11 @@ class ClientConn(Protocol):
                 self.gamespace_p2.scoreboard.score2 = pickle.loads(data[3])
                 self.gamespace_p2.puck.speedx = pickle.loads(data[4])
                 self.gamespace_p2.puck.speedy = pickle.loads(data[5])
-            elif len(data) == 1:
+            elif len(data) == 4:
                 self.gamespace_p2.player1.rect.center = data[0]
+                self.gamespace_p2.puck.rect.center = data[1]
+                self.gamespace_p2.puck.speedx = pickle.loads(data[2])
+                self.gamespace_p2.puck.speedy = pickle.loads(data[3])
 
         def quit(self):
             self.transport.loseConnection()

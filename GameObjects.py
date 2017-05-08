@@ -19,13 +19,13 @@ class ScoreBoard(pygame.sprite.Sprite):
         self.score1 = 0
         self.score2 = 0
         self.font = pygame.font.SysFont("monospace", 15)
-        self.label = self.font.render("Player1: {} vs Player 2: {}".format(self.score1, self.score2), 1, (255, 255, 0))
+        self.label = self.font.render("Player 1: {} vs Player 2: {}".format(self.score1, self.score2), 1, (255, 255, 0))
         self.rect = self.label.get_rect()
         self.rect.centerx = self.gs.width/3
         self.rect.centery = self.gs.height/10
 
     def tick(self):
-        self.label = self.font.render("Player1: {} vs Player 2: {}".format(self.score1, self.score2), 1, (255, 255, 0))
+        self.label = self.font.render("Player 1: {} vs Player 2: {}".format(self.score1, self.score2), 1, (255, 255, 0))
         winner = self.check_score()
         if winner == 1:
             self.gs.winner = winner
@@ -56,6 +56,7 @@ class Puck(pygame.sprite.Sprite):
 
         self.speedx = 0
         self.speedy = 0
+        self.scored = 0
 
     def tick(self):
         self.rect.centerx += self.speedx
@@ -63,14 +64,14 @@ class Puck(pygame.sprite.Sprite):
         
         #Minimal Friction on Surface
         if self.speedx > 0:
-            self.speedx -=.25
+            self.speedx -=.1
         elif self.speedx < 0:
-            self.speedx += .25
+            self.speedx += .1
         
         if self.speedy > 0:
-            self.speedy -=.25
+            self.speedy -=.1
         elif self.speedy < 0:
-            self.speedy += .25
+            self.speedy += .1
 
         #Check Goal
         #Player 1 Scored
@@ -85,6 +86,7 @@ class Puck(pygame.sprite.Sprite):
             self.gs.player2.rect.centerx = self.gs.width/4 * 3
             self.gs.player2.rect.centery = self.gs.height/2
             self.gs.FIRST = True
+            self.scored = 1
 
         if goal == 1:
             self.gs.scoreboard.score1+=1
@@ -117,11 +119,11 @@ class Puck(pygame.sprite.Sprite):
         playerx = rect.centerx
         playery = rect.centery
 
-        diff_y = self.rect.centery - playery
-        diff_x = self.rect.centerx - playerx
+        diff_y = (self.rect.centery - playery) / float(100)
+        diff_x = (self.rect.centerx - playerx) / float(100)
 
-        self.speedx = diff_x
-        self.speedy = diff_y
+        self.speedx = diff_x * 55
+        self.speedy = diff_y * 55
 
 class Player1(pygame.sprite.Sprite):
     def __init__(self, gs=None, image=None):
@@ -136,7 +138,7 @@ class Player1(pygame.sprite.Sprite):
         self.move_type = "NONE"
 
     def tick(self):
-        mv = 20
+        mv = 30
         if self.move_type == "UP":
             self.rect = self.rect.move(0, -mv)
         if self.move_type == "DOWN":
@@ -182,7 +184,7 @@ class Player2(pygame.sprite.Sprite):
         self.move_type = "NONE"
 
     def tick(self):
-        mv = 20
+        mv = 30
         if self.move_type == "UP":
             self.rect = self.rect.move(0, -mv)
         if self.move_type == "DOWN":
