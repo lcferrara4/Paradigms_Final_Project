@@ -116,7 +116,7 @@ class GameSpace():
 		distance = self.calc_collision(puck[0], puck[1], player[0], player[1])
 		if self.FIRST and distance <=55:
 			return True
-		elif distance <=70:
+		elif distance <=60:
 			return True
 		else:
 			return False
@@ -144,7 +144,7 @@ class GameSpace():
 
 class ServerConn(Protocol):
 	def __init__(self, addr, gs):
-		self.addr = addr
+	    self.addr = addr
 	    self.gamespace_p1 = gs
         
 	def connectionMade(self):
@@ -157,10 +157,10 @@ class ServerConn(Protocol):
 			try:
 				data = data.split("addplayer")[1]
 				data = pickle.loads(zlib.decompress(data))
-            	self.gamespace_p1.player2.rect.center = data[0]
+            	                self.gamespace_p1.player2.rect.center = data[0]
 			except Exception as e:
 				pass
-		else:
+	    else:
 			# Load picked data
 			data = pickle.loads(zlib.decompress(data))
 			# Do not update player2 if someone scored
@@ -184,9 +184,9 @@ class ServerConnFactory(Factory):
 	    self.gs = gs
 
 	def buildProtocol(self, addr):
-		self.server_connection = ServerConn(addr, self.gs)
-		self.gs.quit = self.server_connection.quit # loses connection
-		self.gs.write = self.server_connection.write
+	    self.server_connection = ServerConn(addr, self.gs)
+	    self.gs.quit = self.server_connection.quit # loses connection
+	    self.gs.write = self.server_connection.write
 	    return self.server_connection
 
 if __name__ == '__main__':

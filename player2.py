@@ -26,24 +26,24 @@ BOARD_IMG = './hockeyboard.png'
 
 class GameSpace():
 	def __init__(self):
-		# 1) Initialize game space
+	    # 1) Initialize game space
 	    self.connected = False
 	    pygame.init()
-		pygame.key.set_repeat(1,1000)
+	    pygame.key.set_repeat(1,1000)
 	    self.size = self.width, self.height = 940, 480
 	    self.screen = pygame.display.set_mode(self.size)
 	    pygame.display.set_caption("Air Hockey Game - Player 2")
 
 	    # 2) Initialize all game objects
 	    self.clock = pygame.time.Clock()
-        self.background = pygame.image.load(BOARD_IMG)
-		self.background = self.scale_image(.5, self.background)
-        self.player1 = Player1(self, MALLET1_IMG)
-		self.player2 = Player2(self, MALLET2_IMG)
-		self.puck = Puck(self)
-		self.scoreboard = ScoreBoard(self)
-		self.count = 0
-		self.winner = 0
+            self.background = pygame.image.load(BOARD_IMG)
+	    self.background = self.scale_image(.5, self.background)
+            self.player1 = Player1(self, MALLET1_IMG)
+	    self.player2 = Player2(self, MALLET2_IMG)
+	    self.puck = Puck(self)
+	    self.scoreboard = ScoreBoard(self)
+	    self.count = 0
+	    self.winner = 0
 
 	def game_loop(self):
             
@@ -109,7 +109,7 @@ class GameSpace():
 
 class ClientConn(Protocol):
 	def __init__(self, gs):
-	    self.gamespace_p2 = gs
+	        self.gamespace_p2 = gs
 		
 	def connectionMade(self):
 		self.gamespace_p2.connected = True
@@ -135,7 +135,7 @@ class ClientConn(Protocol):
 			# if no scores sent
 			self.gamespace_p2.player1.rect.center = data[0]
 			self.gamespace_p2.puck.rect.center = data[1]
-			 self.gamespace_p2.puck.speedx = pickle.loads(data[2])
+			self.gamespace_p2.puck.speedx = pickle.loads(data[2])
 			self.gamespace_p2.puck.speedy = pickle.loads(data[3])
 
 	def quit(self):
@@ -159,7 +159,7 @@ if __name__ == '__main__':
 	# 3) Start the game loop
 	lc = LoopingCall(gs.game_loop)
 	lc.start(1/60)
-    reactor.connectTCP(CLIENT_HOST, CLIENT_PORT, ClientConnFactory(gs))
+        reactor.connectTCP(CLIENT_HOST, CLIENT_PORT, ClientConnFactory(gs))
 	reactor.run()
 	gs.game_loop()
 	lc.stop()
